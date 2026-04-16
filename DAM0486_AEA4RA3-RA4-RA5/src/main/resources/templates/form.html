@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${visita.idVisita != null ? 'Editar Visita Mèdica' : 'Nova Visita Mèdica'}"></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 15px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        input[type="text"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .btn-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        button, .btn {
+            flex: 1;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            text-align: center;
+            display: inline-block;
+        }
+        button[type="submit"] {
+            background-color: #28a745;
+            color: white;
+        }
+        button[type="submit"]:hover {
+            background-color: #218838;
+        }
+        .btn-cancel {
+            background-color: #6c757d;
+            color: white;
+        }
+        .btn-cancel:hover {
+            background-color: #5a6268;
+        }
+        .required {
+            color: #dc3545;
+        }
+        .form-help {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        h1.edit {
+            border-bottom-color: #17a2b8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 th:classappend="${visita.idVisita != null ? 'edit' : ''}" 
+            th:text="${visita.idVisita != null ? 'Editar Visita Mèdica' : 'Nova Visita Mèdica'}"></h1>
+
+        <form th:action="@{/guardar}" method="post" th:object="${visita}">
+            <!-- Camp ocult per a l'ID (per a edicions) -->
+            <input type="hidden" th:field="*{idVisita}">
+
+            <!-- Camp: Nom del Pacient -->
+            <div class="form-group">
+                <label for="nomPacient">Nom del Pacient <span class="required">*</span></label>
+                <input type="text" id="nomPacient" th:field="*{nomPacient}" 
+                       maxlength="40" required placeholder="Nom complet del pacient">
+                <div class="form-help">Màxim 40 caràcters</div>
+            </div>
+
+            <!-- Camp: Nom del Metge -->
+            <div class="form-group">
+                <label for="nomMetge">Nom del Metge <span class="required">*</span></label>
+                <input type="text" id="nomMetge" th:field="*{nomMetge}" 
+                       maxlength="40" required placeholder="Nom complet del metge">
+                <div class="form-help">Màxim 40 caràcters</div>
+            </div>
+
+            <!-- Camp: Data de la Visita -->
+            <div class="form-group">
+                <label for="data">Data de la Visita <span class="required">*</span></label>
+                <input type="date" id="data" th:field="*{data}" required>
+            </div>
+
+            <!-- Camp: Diagnòstic -->
+            <div class="form-group">
+                <label for="diagnostic">Diagnòstic <span class="required">*</span></label>
+                <textarea id="diagnostic" th:field="*{diagnostic}" 
+                          maxlength="250" required placeholder="Descripció del diagnòstic"></textarea>
+                <div class="form-help">Màxim 250 caràcters</div>
+            </div>
+
+            <!-- Botons d'acció -->
+            <div class="btn-container">
+                <button type="submit" th:text="${visita.idVisita != null ? 'Actualitzar Visita' : 'Crear Visita'}"></button>
+                <a href="/" class="btn btn-cancel">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
